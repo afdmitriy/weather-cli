@@ -22,4 +22,12 @@ const printHelp = () => {
    );
 };
 
-export { printError, printSuccess, printHelp };
+const printWeather = (res, icon) => {
+   console.log(`${chalk.bgMagenta(' Погода ')}
+   Погода в городе - ${res.name}
+   ${icon}  ${res.weather[0].description}
+   Температура: ${res.main.temp} (ощущается как ${res.main.feels_like})
+   `);
+};
+
+export { printError, printSuccess, printHelp, printWeather };

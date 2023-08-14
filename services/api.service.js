@@ -2,11 +2,40 @@ import https from 'https';
 import { getKeyValue, TOKEN_DICTIONARY } from './storage.service.js';
 import axios from 'axios';
 
-const getWeather = async (city) => {
+const getIcon = (icon) => {
+   switch (icon.slice(0, -1)) {
+      case '01':
+         return '☀️';
+      case '02':
+         return '🌤️';
+      case '03':
+         return '☁️';
+      case '04':
+         return '☁️';
+      case '09':
+         return '🌧️';
+      case '10':
+         return '🌦️';
+      case '11':
+         return '🌩️';
+      case '13':
+         return '❄️';
+      case '50':
+         return '🌫️';
+   }
+};
+
+const getWeather = async () => {
    const token = await getKeyValue(TOKEN_DICTIONARY.token);
+   const cityName = await getKeyValue(TOKEN_DICTIONARY.city);
    if (!token) {
       throw new Error(
          'Не задан ключ API, задайте его через команду -t [API_KEY]'
+      );
+   }
+   if (!cityName) {
+      throw new Error(
+         'Не задано название города, задайте его через команду -s [название города]'
       );
    }
 
@@ -14,7 +43,7 @@ const getWeather = async (city) => {
       `https://api.openweathermap.org/data/2.5/weather`,
       {
          params: {
-            q: city,
+            q: cityName,
             appid: token,
             lang: 'ru',
             units: 'metric',
@@ -40,4 +69,4 @@ const getWeather = async (city) => {
    // });
 };
 
-export { getWeather };
+export { getWeather, getIcon };
